@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Enigma de Bretton Woods</title>
+<style>
+:root{
+  --paper:#fbf6ea; --card:#fffdf7; --ink:#2a2118; --mute:#6f604c;
+  --navy:#1f3352; --wine:#8c2a2a; --gold:#b8892b; --gold2:#e2c376; --green:#2f6b3e; --line:#d9c9a3;
+  --serif:Georgia,"Times New Roman",Times,serif;
+  --type:"Courier New",Courier,"Liberation Mono",monospace;
+  --deco:"Didot","Bodoni MT","Bodoni 72",Georgia,serif;
+  --hand:"Segoe Script","Bradley Hand","Brush Script MT","Comic Sans MS",cursive;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{color:var(--ink);font-family:var(--serif);line-height:1.6;min-height:100vh;background-color:var(--paper);
+  background-image:repeating-linear-gradient(90deg,transparent 0 46px,#b8892b14 46px 48px,transparent 48px 52px,#b8892b0d 52px 53px),radial-gradient(circle at 50% 0%,#fff 0%,transparent 70%)}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 16px 50px}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:8px;background:var(--gold2);padding:6px 10px;z-index:9}
+button,select,input{font:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sr{position:absolute;left:-9999px}
+
+.marquee{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--navy);color:#f6e7c1;border:3px double var(--gold2);border-radius:4px;padding:10px 16px;margin-bottom:18px;box-shadow:0 6px 0 -3px var(--gold)}
+.marquee .name{font-family:var(--deco);letter-spacing:.22em;text-transform:uppercase;font-size:.95rem}
+.marquee .name small{display:block;letter-spacing:.3em;font-size:.62rem;color:var(--gold2)}
+.hud{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-family:var(--type);font-size:.82rem}
+.chip{background:#ffffff14;border:1px solid #e2c37666;padding:5px 10px;border-radius:3px;white-space:nowrap}
+.chip b{color:#fff}
+.iconbtn{background:transparent;border:1px solid #e2c37699;color:#f6e7c1;border-radius:3px;padding:4px 9px;cursor:pointer}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:26px;position:relative;box-shadow:0 1px 0 #fff inset,0 10px 30px -18px #5a4320}
+.card::before{content:"";position:absolute;inset:7px;border:1px solid var(--gold2);border-radius:3px;pointer-events:none}
+.corner{position:absolute;width:26px;height:26px;border:2px solid var(--gold);pointer-events:none}
+.c1{top:-1px;left:-1px;border-right:0;border-bottom:0}.c2{top:-1px;right:-1px;border-left:0;border-bottom:0}
+.c3{bottom:-1px;left:-1px;border-right:0;border-top:0}.c4{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.eyebrow{font-family:var(--type);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin:0 0 4px}
+h1,h2{font-family:var(--deco);font-weight:700;line-height:1.15;margin:0 0 10px;color:var(--navy)}
+h1{font-size:clamp(1.8rem,5vw,2.8rem)} h2{font-size:clamp(1.35rem,3.6vw,1.9rem)}
+p{margin:0 0 12px}
+.lead{font-size:1.06rem}
+.story p:first-child::first-letter{font-family:var(--deco);float:left;font-size:3.4em;line-height:.85;padding:4px 8px 0 0;color:var(--wine)}
+.type{font-family:var(--type);background:#fff8e3;border:1px dashed var(--gold);padding:14px 16px;border-radius:3px;font-size:.9rem;white-space:pre-line}
+.photo{width:100%;height:auto;display:block;background:#e9dcc0;padding:8px 8px 8px;border:1px solid #d6c59d;box-shadow:0 12px 22px -14px #3b2a12,0 2px 0 #fff inset;border-radius:2px}
+.photo-wrap{position:relative;transform:rotate(.6deg)}
+.photo-wrap::before,.photo-wrap::after{content:"";position:absolute;width:62px;height:20px;background:#efe3bfcc;top:-8px;box-shadow:0 1px 2px #0002}
+.photo-wrap::before{left:18px;transform:rotate(-8deg)}.photo-wrap::after{right:18px;transform:rotate(7deg)}
+.cap{font-family:var(--hand);font-size:.95rem;color:var(--mute);text-align:center;margin-top:8px}
+.cols{display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:start}
+label.l{display:block;font-family:var(--type);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:14px 0 6px}
+select,input[type=text]{width:100%;max-width:420px;background:#fffef9;color:var(--ink);border:1.5px solid var(--navy);border-radius:3px;padding:11px 12px;font-family:var(--type);font-size:1rem}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{cursor:pointer;font-family:var(--deco);letter-spacing:.08em;font-size:1rem;padding:11px 22px;border-radius:3px;border:2px solid var(--navy);background:var(--navy);color:#fbf1d6;box-shadow:0 4px 0 #0f1d33;transition:transform .06s,box-shadow .06s}
+.btn:hover{background:#28426a}.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0f1d33}
+.btn.gold{background:var(--gold2);color:var(--ink);border-color:var(--gold);box-shadow:0 4px 0 #8a6619}
+.btn.gold:hover{background:#ebd08f}
+.btn.plain{background:transparent;color:var(--navy);box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.small{font-size:.86rem;color:var(--mute)}
+.fb{min-height:1.6em;font-family:var(--type);font-size:.95rem;margin-top:12px}
+.fb.bad{color:var(--wine)}.fb.good{color:var(--green)}
+
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.key{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:8px 4px;text-align:center;font-family:var(--type);font-size:.7rem;color:var(--mute);position:relative}
+.key svg{display:block;margin:0 auto 2px;width:34px;height:34px}
+.key.on{border-color:var(--navy);color:var(--navy);box-shadow:0 0 0 2px #1f335222}
+.key.ok{border-color:var(--gold);color:#7a5a12;background:#fff5d8}
+.key.ko{border-color:#c9a0a0;color:var(--wine);background:#fbeeee}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 12px;align-items:center}
+.tag{font-family:var(--type);font-size:.74rem;border:1px solid var(--navy);color:var(--navy);padding:2px 8px;border-radius:2px}
+.tag.w{border-color:var(--wine);color:var(--wine)}
+.tries{display:inline-flex;gap:5px;align-items:center;font-family:var(--type);font-size:.74rem;color:var(--mute)}
+.tries i{width:14px;height:14px;border-radius:50%;background:var(--wine);display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px var(--wine)}
+.tries i.used{background:transparent}
+.q{background:#fffaf0;border-left:4px solid var(--wine);padding:14px 16px;margin:12px 0;border-radius:0 4px 4px 0}
+.q strong{font-size:1.04rem}
+.src{font-family:var(--type);font-size:.74rem;color:var(--mute);margin-top:8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.post{cursor:pointer;text-align:left;background:#fffef8;border:1.5px solid var(--line);border-radius:3px;padding:12px;font-family:var(--serif);font-size:.98rem;color:var(--ink)}
+.post[aria-pressed=true]{border-color:var(--navy);box-shadow:0 0 0 3px #1f335233;background:#eef2f9}
+.post b{display:block;font-family:var(--deco);font-size:1.1rem;color:var(--navy)}
+.seq{display:grid;gap:8px;margin-top:8px}
+.card-t{cursor:pointer;display:flex;align-items:center;gap:12px;text-align:left;background:#fffef8;border:1.5px solid var(--line);border-radius:3px;padding:10px 12px;font-family:var(--serif);font-size:.97rem;color:var(--ink)}
+.card-t .n{flex:0 0 30px;height:30px;border-radius:50%;border:2px dashed var(--gold);display:grid;place-items:center;font-family:var(--type);font-weight:700;color:var(--wine)}
+.card-t.sel{background:#fff3d2;border-color:var(--gold)}.card-t.sel .n{border-style:solid;background:var(--gold2)}
+.hint{border:1px solid var(--gold);background:#fff4d4;border-radius:3px;padding:12px 14px;margin-top:12px}
+.hint .pg{display:block;font-family:var(--type);font-size:.75rem;color:var(--mute);margin-top:6px}
+.jimmy{font-family:var(--hand);color:#5b3a8a}
+
+/* ---- pasillo ---- */
+.hall{width:100%;height:auto;display:block;border-radius:4px;border:1px solid var(--line);background:#3a2418}
+#det{transition:transform 2.6s cubic-bezier(.45,.05,.4,1);cursor:pointer}
+.leg{transform-box:fill-box;transform-origin:50% 0}
+.walking .leg.a{animation:stepA .42s infinite alternate ease-in-out}
+.walking .leg.b{animation:stepA .42s infinite alternate-reverse ease-in-out}
+.walking .bob{animation:bob .21s infinite alternate}
+@keyframes stepA{from{transform:rotate(16deg)}to{transform:rotate(-16deg)}}
+@keyframes bob{to{transform:translateY(-2px)}}
+.glow{animation:glow 1.6s infinite alternate}
+@keyframes glow{from{opacity:.35}to{opacity:.95}}
+.flicker{animation:flick 3s infinite}
+@keyframes flick{0%,100%{opacity:.85}47%{opacity:.85}48%{opacity:.4}50%{opacity:.9}52%{opacity:.55}54%{opacity:.85}}
+.quip{min-height:1.5em;font-family:var(--hand);color:var(--wine);text-align:center;margin-top:6px}
+
+.cert{text-align:center;border:6px double var(--gold);padding:24px 18px;background:radial-gradient(circle at 50% 50%,#fff 0,#fff8e6 80%)}
+.seal{width:96px;height:96px;margin:6px auto}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0;text-align:left}
+.stat{border:1px solid var(--line);border-radius:3px;padding:10px 12px;background:#fff}
+.stat .k{font-family:var(--type);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.stat .v{font-family:var(--deco);font-size:1.4rem;color:var(--navy);font-weight:700;word-break:break-word}
+table{width:100%;border-collapse:collapse;font-family:var(--type);font-size:.85rem;margin-top:6px}
+th,td{border-bottom:1px solid var(--line);padding:7px 5px;text-align:left}
+th{color:var(--mute);font-weight:400}
+.code{font-family:var(--type);font-weight:700;font-size:clamp(1.05rem,4.4vw,1.55rem);letter-spacing:.12em;color:var(--wine);border:2px dashed var(--wine);padding:12px;margin:10px auto;max-width:440px;background:#fff;word-break:break-all}
+.hidden{display:none!important}
+footer{margin-top:26px;text-align:center;font-size:.8rem;color:var(--mute)}
+footer .btn{font-size:.78rem;padding:6px 12px;margin-top:8px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (max-width:760px){
+  .cols{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.card{padding:18px}
+  .key{font-size:.56rem;padding:6px 2px}.key svg{width:26px;height:26px}.stats{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card{animation:in .4s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .shake{animation:sh .35s}
+  @keyframes sh{20%{transform:translateX(-7px) rotate(-.4deg)}60%{transform:translateX(7px) rotate(.4deg)}}
+  .key.ok svg{animation:pop .5s}
+  @keyframes pop{50%{transform:scale(1.35) rotate(-12deg)}}
+}
+@media (prefers-reduced-motion:reduce){#det{transition:none}.walking .leg,.walking .bob,.glow,.flicker{animation:none}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Saltar al contenido</a>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="marquee">
+    <div class="name">Mount Washington Hotel<small>Bretton Woods · New Hampshire · Julio 1944</small></div>
+    <div class="hud" aria-live="polite">
+      <span class="chip">🕵 <b id="hudPlayer">Detective —</b></span>
+      <span class="chip">⏱ <b id="hudTime">00:00</b></span>
+      <span class="chip">★ <b id="hudScore">0</b> pts</span>
+      <button class="iconbtn" id="btnSound" aria-pressed="true">🔔 Sonido</button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+  <!-- INTRO -->
+  <section id="scrIntro" class="card" aria-labelledby="tIntro">
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    <p class="eyebrow">Escape room · Grupo G03 · Caso nº 1944-26</p>
+    <h1 id="tIntro">El Enigma de Bretton Woods</h1>
+    <div class="photo-wrap" style="margin:10px auto 22px;max-width:640px" id="heroPic"></div>
+    <div class="cols">
+      <div class="story">
+        <p class="lead">New Hampshire, 30 de junio de 1944. La tormenta de la tarde ha dejado relucientes los tejados rojos del Mount Washington Hotel. Dentro, más de setecientos delegados de 44 países afinan sus discursos: mañana empieza la conferencia que debe reconstruir la economía del mundo cuando termine la guerra.</p>
+        <p>A medianoche, la conserje <strong>Eleanor Hale</strong> abre la caja fuerte para guardar los pasaportes y se queda helada. Entre los sobres hay un volumen encuadernado que no debería existir: <em>«Informe Anual del FMI 2026. Navegando en un mundo incierto»</em>. Impreso dentro de ochenta y dos años. Por una institución que todavía nadie ha fundado.</p>
+        <p>Antes del amanecer, alguien arranca sus páginas clave, las esconde en cinco estancias del hotel y sella cada puerta con una cerradura de combinación. En la alfombra del vestíbulo solo queda una tarjeta firmada con una letra: <strong>«J.»</strong></p>
+        <p>La dirección no puede llamar a la policía sin desatar un escándalo diplomático en plena guerra. Así que te han llamado a ti, <strong>detective</strong>. Tienes una noche, cinco puertas, un informe llegado del futuro y la sospecha de que no todo lo que encuentres será verdad. Si fracasas, los secretos del FMI caerán en malas manos… y la historia podría escribirse de otra manera.</p>
+      </div>
+      <div>
+        <div class="type" aria-label="Telegrama con las reglas">TELEGRAMA CONFIDENCIAL ··· STOP
+CADA PUERTA VALE 100 PUNTOS STOP
+CLAVE EQUIVOCADA MENOS 20 STOP
+LLAMAR A LA CONSERJE MENOS 30 STOP
+SOLO DOS INTENTOS POR PUERTA STOP
+SI FALLAS DOS VECES LA PUERTA SE SELLA STOP
+DESCONFIE DE LAS NOTAS FIRMADAS CON J STOP</div>
+        <label class="l" for="player">Registro de detectives</label>
+        <select id="player"><option value="">— ¿Quién investiga? —</option></select>
+        <div id="otherBox" class="hidden">
+          <label class="l" for="otherName">Escribe tu nombre</label>
+          <input type="text" id="otherName" maxlength="40" autocomplete="name">
+        </div>
+        <div class="btns"><button class="btn" id="btnStart">Aceptar el caso ▸</button></div>
+        <p class="fb bad" id="fbIntro" role="alert"></p>
+        <p class="small">Ten a mano el Informe Anual del FMI 2026. El cronómetro empieza al aceptar el caso.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASILLO -->
+  <section id="scrHall" class="card hidden" aria-labelledby="hTitle">
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    <p class="eyebrow" id="hEyebrow"></p>
+    <h2 id="hTitle"></h2>
+    <div id="hallPic"></div>
+    <p class="quip" id="quip" aria-live="polite"></p>
+    <p class="lead" id="hText"></p>
+    <div class="btns"><button class="btn" id="btnEnter"></button></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="scrGame" class="hidden" aria-labelledby="pTitle">
+    <div class="keys" id="keys" aria-label="Llaves conseguidas"></div>
+    <div class="card" id="pCard">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="eyebrow" id="pEyebrow"></p>
+      <h2 id="pTitle"></h2>
+      <div class="meta" id="pMeta"></div>
+      <div class="cols">
+        <div>
+          <p id="pStory"></p>
+          <div class="q"><strong id="pQ"></strong><div id="pBody"></div><div class="src" id="pSrc"></div></div>
+          <div class="btns">
+            <button class="btn" id="btnCheck">Probar la combinación ▸</button>
+            <button class="btn gold" id="btnHint">Llamar a la conserje (−30)</button>
+            <button class="btn" id="btnNext" style="display:none">Volver al pasillo ▸</button>
+          </div>
+          <div id="pHint" class="hint hidden" role="note"></div>
+          <p class="fb" id="pFb" role="status" aria-live="assertive"></p>
+        </div>
+        <figure style="margin:0"><div class="photo-wrap" id="pPic"></div><figcaption class="cap" id="pCap"></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="scrEnd" class="card hidden" aria-labelledby="tEnd">
+    <div class="cert">
+      <p class="eyebrow">Salón Dorado · Sesión inaugural · 1 de julio de 1944</p>
+      <h1 id="tEnd">Informe del Detective</h1>
+      <svg class="seal" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#b8892b"/><circle cx="50" cy="50" r="38" fill="#8c2a2a"/><circle cx="50" cy="50" r="33" fill="none" stroke="#e2c376" stroke-dasharray="3 3"/><text x="50" y="47" text-anchor="middle" font-family="Georgia" font-size="12" fill="#fbf1d6">CASO</text><text x="50" y="61" text-anchor="middle" font-family="Georgia" font-size="11" fill="#fbf1d6">CERRADO</text><text x="50" y="74" text-anchor="middle" font-family="Georgia" font-size="8" fill="#e2c376">G03</text></svg>
+      <p class="lead" id="eMsg"></p>
+      <div class="stats">
+        <div class="stat"><div class="k">Investigador</div><div class="v" id="eP"></div></div>
+        <div class="stat"><div class="k">Fecha</div><div class="v" id="eD" style="font-size:1.05rem"></div></div>
+        <div class="stat"><div class="k">Puntuación final</div><div class="v" id="eS"></div></div>
+        <div class="stat"><div class="k">Tiempo total</div><div class="v" id="eT"></div></div>
+      </div>
+      <table aria-label="Desglose por estancia"><thead><tr><th>Estancia</th><th>Resultado</th><th>Fallos</th><th>Pista</th><th>Pts</th></tr></thead><tbody id="eTable"></tbody></table>
+      <p class="eyebrow" style="margin-top:18px">Código de verificación</p>
+      <div class="code" id="eCode"></div>
+      <p class="small">Entrega al profesor tu nombre, la puntuación, el tiempo en segundos (<b id="eSec"></b> s) y este código.</p>
+      <div class="btns" style="justify-content:center"><button class="btn" id="btnCopy">Copiar resumen</button><button class="btn plain" onclick="location.reload()">Nuevo caso</button></div>
+      <p class="fb good" id="fbCopy" role="status"></p>
+    </div>
+  </section>
+
+  <!-- PROFESOR -->
+  <section id="scrProf" class="card hidden" aria-labelledby="tProf">
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    <p class="eyebrow">Despacho de dirección</p>
+    <h2 id="tProf">Validación del profesor · G03</h2>
+    <p>Introduce los datos que entrega el alumno. El código se recalcula a partir del nombre, la puntuación y el tiempo; si cualquiera se ha modificado, no coincidirá. (Las mayúsculas y las tildes del nombre no importan; escribe el nombre sin la palabra «Detective».)</p>
+    <label class="l" for="vP">Nombre (p. ej. «Alumno 7»)</label><input type="text" id="vP">
+    <label class="l" for="vS">Puntuación (0–500)</label><input type="text" id="vS" inputmode="numeric">
+    <label class="l" for="vT">Tiempo total en segundos</label><input type="text" id="vT" inputmode="numeric">
+    <label class="l" for="vC">Código de verificación</label><input type="text" id="vC" placeholder="G03-XXXX-XXXX-XXXX">
+    <div class="btns"><button class="btn" id="btnVerify">Comprobar</button><button class="btn plain" onclick="location.reload()">Volver al juego</button></div>
+    <p class="fb" id="vFb" role="status" aria-live="assertive"></p>
+  </section>
+  </main>
+
+  <footer>
+    Escape room educativo basado en el <em>Informe Anual del FMI 2026: Navegando en un mundo incierto</em> · Grupo G03 · Ilustraciones originales.<br>
+    <button class="btn plain" id="btnProf">Acceso profesor</button>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+
+/* ===== Hash (FNV-1a iterado con sal) ===== */
+function f(s){let x=0x811c9dc5;for(let i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,0x01000193)>>>0;}return x.toString(16).padStart(8,"0");}
+function H(s){let r=s;for(let i=0;i<500;i++)r=f(r+"|G03-MWH44|"+i);return r;}
+function norm(s){return String(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z0-9]/g,"");}
+function vcode(player,score,secs){const a=H("VERIF|"+norm(player)+"|"+score+"|"+secs),b=H(a+"#"+score),c=H(b+"#"+secs);return ("G03-"+a.slice(0,4)+"-"+b.slice(0,4)+"-"+c.slice(0,4)).toUpperCase();}
+
+/* ===== Motor de "fotografías" de época (SVG con luz, textura, grano y viraje sepia) ===== */
+function photo(id,label,inner,extraDefs){
+  return `<svg class="photo" viewBox="0 0 640 420" role="img" aria-label="${label}">
+  <defs>
+    <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="${id.length*7}" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .2  0 0 0 0 .14  0 0 0 0 .08  0 0 0 .55 0"/></filter>
+    <filter id="${id}w" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012 .35" numOctaves="3" seed="3"/><feColorMatrix values="0 0 0 0 .16  0 0 0 0 .08  0 0 0 0 .03  0 0 0 .9 -.25"/></filter>
+    <filter id="${id}s" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="3" dy="6" stdDeviation="5" flood-color="#1a0d04" flood-opacity=".55"/></filter>
+    <filter id="${id}b"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="${id}b1"><feGaussianBlur stdDeviation=".6"/></filter>
+    <radialGradient id="${id}v" cx="50%" cy="45%" r="70%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1b0d03" stop-opacity=".72"/></radialGradient>
+    <radialGradient id="${id}l" cx="50%" cy="0%" r="80%"><stop offset="0" stop-color="#ffe2a6" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2a6" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${id}brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbe3a1"/><stop offset=".45" stop-color="#c49a3c"/><stop offset="1" stop-color="#6e4f14"/></linearGradient>
+    <linearGradient id="${id}mah" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a3c1c"/><stop offset="1" stop-color="#3a1a09"/></linearGradient>
+    <linearGradient id="${id}paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf3dc"/><stop offset="1" stop-color="#e3d1a6"/></linearGradient>
+    ${extraDefs||""}
+  </defs>
+  ${inner}
+  <rect width="640" height="420" fill="url(#${id}l)"/>
+  <rect width="640" height="420" filter="url(#${id}n)" opacity=".55" style="mix-blend-mode:multiply"/>
+  <rect width="640" height="420" fill="#7a4e1e" opacity=".13" style="mix-blend-mode:multiply"/>
+  <rect width="640" height="420" fill="url(#${id}v)"/>
+</svg>`;}
+function note(x,y,rot,text,id,w){w=w||150;return `<g transform="translate(${x},${y}) rotate(${rot})" filter="url(#${id}s)"><rect width="${w}" height="54" fill="#fff6c9"/><rect width="${w}" height="10" fill="#f2e39a"/><circle cx="${w/2}" cy="5" r="4" fill="#a32121"/><text x="10" y="34" font-family="Segoe Script,Bradley Hand,Brush Script MT,cursive" font-size="17" fill="#3e2a6b">${text}</text></g>`;}
+
+const PIC={
+ hero(){const id="hr";return photo(id,"Fotografía de época: el gran hotel blanco de tejados rojos al atardecer, al pie de las montañas",`
+  <defs><linearGradient id="hrsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d6f8f"/><stop offset=".55" stop-color="#e9b77a"/><stop offset="1" stop-color="#f6dcae"/></linearGradient>
+  <linearGradient id="hrroof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8432f"/><stop offset="1" stop-color="#6e2016"/></linearGradient>
+  <linearGradient id="hrwall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d8cfc0"/><stop offset=".5" stop-color="#fbf6ea"/><stop offset="1" stop-color="#c8bba5"/></linearGradient>
+  <linearGradient id="hrmtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7a93"/><stop offset="1" stop-color="#9aa4b3"/></linearGradient></defs>
+  <rect width="640" height="420" fill="url(#hrsky)"/>
+  <circle cx="500" cy="150" r="60" fill="#ffd28a" opacity=".55" filter="url(#hrb)"/>
+  <path d="M0 230 L90 150 L150 190 L250 95 L330 170 L420 120 L520 185 L640 140 L640 420 L0 420Z" fill="url(#hrmtn)" filter="url(#hrb1)"/>
+  <path d="M232 112 L250 95 L268 112 L258 110 L250 104 L242 114Z" fill="#fff" opacity=".85"/>
+  <path d="M0 280 L120 220 L260 260 L380 215 L520 255 L640 225 L640 420 L0 420Z" fill="#3f5a3c"/>
+  <g fill="#2c4429" filter="url(#hrb1)">${Array.from({length:40},(_,k)=>{const x=k*16+((k*37)%9),h=18+(k*13)%16;return `<path d="M${x} ${330-h} l7 ${h} h-14z"/>`;}).join("")}</g>
+  <g filter="url(#hrs)">
+    <rect x="110" y="230" width="420" height="96" fill="url(#hrwall)"/>
+    <path d="M98 233 L320 196 L542 233Z" fill="url(#hrroof)"/>
+    <rect x="212" y="168" width="40" height="158" fill="url(#hrwall)"/><path d="M204 170 L232 128 L260 170Z" fill="url(#hrroof)"/>
+    <rect x="388" y="168" width="40" height="158" fill="url(#hrwall)"/><path d="M380 170 L408 128 L436 170Z" fill="url(#hrroof)"/>
+    <g fill="#f2c46b" opacity=".9">${Array.from({length:3},(_,r)=>Array.from({length:17},(_,c)=>{const x=124+c*24;if((x>205&&x<258)||(x>382&&x<434))return"";return `<rect x="${x}" y="${246+r*24}" width="9" height="13" opacity="${((r*5+c*3)%4)?.95:.35}"/>`;}).join("")).join("")}</g>
+    <rect x="300" y="290" width="40" height="36" fill="#2a1a10"/><path d="M290 290 h60 l-6 -10 h-48z" fill="#6e2016"/>
+    <rect x="98" y="322" width="444" height="6" fill="#b9a988"/>
+  </g>
+  <rect x="0" y="330" width="640" height="90" fill="#344b31"/>
+  <path d="M260 420 Q320 350 380 420Z" fill="#8a7a5a" opacity=".6"/>`);},
+
+ recepcion(){const id="rc";
+  const m=38,h=1+38/60;const ha=h*30*Math.PI/180,ma=m*6*Math.PI/180;
+  return photo(id,"Fotografía de la recepción: mostrador de caoba con libro de registro, timbre de latón, casillero de llaves, reloj de pared y una nota clavada",`
+  <rect width="640" height="420" fill="url(#${id}mah)"/><rect width="640" height="420" filter="url(#${id}w)" opacity=".7"/>
+  ${[0,1,2,3].map(k=>`<rect x="${20+k*160}" y="30" width="130" height="150" fill="none" stroke="#2a1105" stroke-width="3"/><rect x="${23+k*160}" y="33" width="124" height="2" fill="#b2733f" opacity=".5"/>`).join("")}
+  <g transform="translate(40,48)" filter="url(#${id}s)"><rect width="230" height="120" fill="#4a230d"/>${Array.from({length:4},(_,r)=>Array.from({length:8},(_,c)=>`<rect x="${6+c*28}" y="${6+r*28}" width="24" height="24" fill="#2b1206"/>${(r*8+c)%3?`<g transform="translate(${18+c*28},${10+r*28})"><circle r="2.6" fill="none" stroke="url(#${id}brass)" stroke-width="1.4"/><rect x="-.7" y="2" width="1.4" height="11" fill="url(#${id}brass)"/></g>`:""}`).join("")).join("")}</g>
+  <g transform="translate(500,100)" filter="url(#${id}s)"><circle r="52" fill="url(#${id}brass)"/><circle r="44" fill="#f8efd6"/>
+   ${Array.from({length:12},(_,k)=>{const a=k*30*Math.PI/180;return `<rect x="-1.2" y="-41" width="2.4" height="${k%3?5:9}" fill="#2a2118" transform="rotate(${k*30})"/>`;}).join("")}
+   <line x1="0" y1="0" x2="${(22*Math.sin(ha)).toFixed(1)}" y2="${(-22*Math.cos(ha)).toFixed(1)}" stroke="#1a120c" stroke-width="4" stroke-linecap="round"/>
+   <line x1="0" y1="0" x2="${(34*Math.sin(ma)).toFixed(1)}" y2="${(-34*Math.cos(ma)).toFixed(1)}" stroke="#1a120c" stroke-width="2.5" stroke-linecap="round"/>
+   <circle r="3.5" fill="#8a6619"/><text y="22" text-anchor="middle" font-family="Georgia" font-size="7" fill="#6f604c">BRETTON WOODS</text></g>
+  <ellipse cx="320" cy="30" rx="210" ry="60" fill="#ffd88f" opacity=".25" filter="url(#${id}b)"/>
+  <path d="M0 250 L640 250 L640 420 L0 420Z" fill="#3a1909"/>
+  <path d="M0 232 L640 232 L640 256 L0 256Z" fill="#8a4a24"/><rect y="232" width="640" height="3" fill="#d79a62" opacity=".7"/>
+  <rect y="256" width="640" height="164" filter="url(#${id}w)" opacity=".8"/>
+  ${[0,1,2,3].map(k=>`<rect x="${30+k*155}" y="276" width="130" height="120" fill="none" stroke="#1d0a02" stroke-width="3"/>`).join("")}
+  <g transform="translate(170,196) skewX(-18)" filter="url(#${id}s)"><rect width="190" height="44" fill="url(#${id}paper)"/><line x1="95" y1="0" x2="95" y2="44" stroke="#a8946b"/>
+   <g stroke="#6b5a42" stroke-width=".8" opacity=".7">${Array.from({length:5},(_,k)=>`<line x1="8" y1="${8+k*7}" x2="${70+(k%3)*6}" y2="${8+k*7}"/><line x1="104" y1="${8+k*7}" x2="${170-(k%2)*12}" y2="${8+k*7}"/>`).join("")}</g></g>
+  <line x1="352" y1="224" x2="392" y2="190" stroke="#1a120c" stroke-width="3"/><path d="M392 190 l8 -10 l-3 13z" fill="#e9e1c9"/>
+  <g transform="translate(470,196)" filter="url(#${id}s)"><ellipse cx="0" cy="36" rx="38" ry="8" fill="#2a1306"/><path d="M-32 34 Q0 -18 32 34Z" fill="url(#${id}brass)"/><ellipse cx="-10" cy="8" rx="7" ry="12" fill="#fff6d8" opacity=".55"/><rect x="-3" y="-12" width="6" height="10" fill="url(#${id}brass)"/></g>
+  ${note(60,280,-6,"Fácil: 191 ;) —J.",id,170)}`);},
+
+ mapas(){const id="mp";
+  return photo(id,"Fotografía del salón de mapas: mapa antiguo sobre tapete verde, una chincheta roja, una lupa, una brújula de latón, un sello postal y una nota",`
+  <rect width="640" height="420" fill="#2c4a33"/><rect width="640" height="420" filter="url(#${id}w)" opacity=".35"/>
+  <g filter="url(#${id}s)"><rect x="50" y="34" width="470" height="300" fill="url(#${id}paper)"/>
+   <rect x="50" y="34" width="470" height="300" fill="none" stroke="#8a6a2e" stroke-width="2"/>
+   <g stroke="#a8946b" stroke-width=".6" opacity=".6">${Array.from({length:9},(_,k)=>`<line x1="${50+k*52}" y1="34" x2="${50+k*52}" y2="334"/>`).join("")}${Array.from({length:6},(_,k)=>`<line x1="50" y1="${34+k*55}" x2="520" y2="${34+k*55}"/>`).join("")}</g>
+   <g fill="#c7b892" stroke="#7d6a45" stroke-width="1.2" filter="url(#${id}b1)">
+    <path d="M100 80 q40 -26 90 -12 q30 10 26 40 q-14 20 -36 26 q-10 18 -20 36 q-14 10 -22 -6 q-12 -30 -30 -44 q-18 -20 -8 -40z"/>
+    <path d="M170 186 q12 4 20 18 q-2 10 -10 12 q-8 -12 -10 -30z"/>
+    <path d="M196 214 q30 -2 46 22 q4 40 -18 80 q-16 6 -22 -20 q-10 -40 -6 -82z"/>
+    <path d="M286 74 q30 -16 52 -2 q-2 24 -20 34 q-24 -4 -32 -32z"/>
+    <path d="M292 126 q36 -8 54 16 q4 50 -24 86 q-26 -24 -30 -102z"/>
+    <path d="M346 66 q80 -24 140 6 q4 40 -38 62 q-50 6 -76 -16 q-30 -20 -26 -52z"/>
+    <path d="M436 218 q30 -8 46 6 q-2 22 -24 26 q-22 -4 -22 -32z"/></g>
+   <rect x="50" y="34" width="470" height="300" fill="url(#${id}v)" opacity=".35"/></g>
+  <g filter="url(#${id}s)"><circle cx="176" cy="178" r="5.5" fill="#b3221b"/><circle cx="174.5" cy="176.5" r="1.8" fill="#ffb3a8"/></g>
+  <g transform="translate(330,118) rotate(-24)" filter="url(#${id}s)"><circle r="44" fill="#d9ecf2" opacity=".28"/><circle r="44" fill="none" stroke="url(#${id}brass)" stroke-width="8"/><ellipse cx="-14" cy="-16" rx="12" ry="7" fill="#fff" opacity=".45"/><rect x="40" y="-7" width="90" height="14" rx="6" fill="#3a1a09"/></g>
+  <g transform="translate(560,330)" filter="url(#${id}s)"><circle r="46" fill="url(#${id}brass)"/><circle r="38" fill="#efe3c3"/><path d="M0 -32 L6 0 L0 32 L-6 0Z" fill="#8c2a2a"/><path d="M0 32 L6 0 L-6 0Z" fill="#2a2118"/><circle r="3" fill="#2a2118"/><text y="-22" text-anchor="middle" font-family="Georgia" font-size="8">N</text></g>
+  <g transform="translate(36,334) rotate(-9)" filter="url(#${id}s)"><rect width="64" height="50" fill="#f6f1e2"/><rect x="5" y="5" width="54" height="40" fill="#cfe0c8"/>
+   <path d="M14 40 h36 v-5 h-4 v-5 h-4 v-5 h-4 v-5 h-4 v5 h-4 v5 h-4 v5 h-4 v5 h-4z" fill="#5e6e4c" opacity=".85" filter="url(#${id}b1)"/><circle cx="46" cy="15" r="4" fill="#e2b04a" opacity=".8"/></g>
+  ${note(410,348,5,"Europa, fijo. —J.",id,160)}`);},
+
+ juntas(){const id="jt";
+  return photo(id,"Fotografía de la sala de juntas: pizarra con anotaciones de tiza medio borradas, mesa larga con urna de votación y una nota",`
+  <rect width="640" height="420" fill="#6b5340"/><rect width="640" height="420" filter="url(#${id}w)" opacity=".45"/>
+  <g filter="url(#${id}s)"><rect x="110" y="26" width="420" height="190" fill="#4a2a14"/><rect x="122" y="38" width="396" height="166" fill="#253229"/>
+   <rect x="122" y="38" width="396" height="166" filter="url(#${id}n)" opacity=".6"/>
+   <g fill="#e8eadf" font-family="Segoe Script,Bradley Hand,cursive" opacity=".75">
+    <text x="146" y="80" font-size="20" opacity=".55">1 voto = 100.0__ DEG</text>
+    <text x="146" y="120" font-size="15" opacity=".3">cuotas · Decimosexta · ¿equi…?</text>
+    <g transform="translate(420,120)" stroke="#e8eadf" fill="none" stroke-width="2" opacity=".6"><circle r="30"/><path d="M0 -30 V30"/><path d="M0 0 L30 0" opacity=".35"/></g>
+    <g stroke="#e8eadf" stroke-width="2.4" opacity=".5">${Array.from({length:12},(_,k)=>`<line x1="${150+k*9+(k%5===4?0:0)}" y1="150" x2="${k%5===4?150+k*9-40:150+k*9}" y2="${k%5===4?178:178}"/>`).join("")}</g>
+    <ellipse cx="300" cy="96" rx="80" ry="22" fill="#253229" opacity=".55" filter="url(#${id}b)"/></g>
+   <rect x="120" y="204" width="400" height="10" fill="#6e4325"/><rect x="200" y="206" width="22" height="5" fill="#f4f1e8"/></g>
+  <path d="M40 420 L160 270 L480 270 L600 420Z" fill="url(#${id}mah)" filter="url(#${id}s)"/><path d="M160 270 L480 270 L486 276 L154 276Z" fill="#a8613a"/>
+  ${[0,1,2].map(k=>`<g filter="url(#${id}s)"><rect x="${70+k*18}" y="${300+k*36}" width="34" height="70" rx="6" fill="#2a1306"/><rect x="${536-k*18}" y="${300+k*36}" width="34" height="70" rx="6" fill="#2a1306"/></g>`).join("")}
+  <g transform="translate(290,262)" filter="url(#${id}s)"><path d="M0 0 h64 v40 h-64z" fill="#3b2a1a"/><path d="M0 0 l10 -12 h64 l-10 12z" fill="#5a412a"/><path d="M64 0 l10 -12 v40 l-10 12z" fill="#2a1d10"/><rect x="18" y="-8" width="30" height="3" fill="#111"/><rect x="20" y="16" width="24" height="10" fill="#d8c79c"/></g>
+  <g transform="translate(212,282) rotate(-8)" filter="url(#${id}s)"><rect width="34" height="44" fill="#f6efd8"/><path d="M6 12h22M6 20h18M6 28h20" stroke="#8a7a5a"/></g>
+  ${note(380,320,6,"¡24! Facilísimo —J.",id,170)}`);},
+
+ biblioteca(){const id="bb";
+  const cols=["#6e2016","#1f3352","#2f5a3a","#7a5a12","#4a2a14","#5b3a6b","#8c6a3a"];
+  let books="";for(let s=0;s<4;s++){let x=14;while(x<626){const w=10+((x*7+s*13)%12),h=58+((x*3+s*5)%20);const c=cols[(x+s*3)%7];
+    if(x>232&&x<408){x+=w;continue;}books+=`<rect x="${x}" y="${30+s*92+(80-h)}" width="${w-1.5}" height="${h}" fill="${c}"/><rect x="${x+2}" y="${30+s*92+(80-h)+10}" width="${w-6}" height="2" fill="#e2c376" opacity=".55"/>`;x+=w;}}
+  return photo(id,"Fotografía de la biblioteca: estanterías de libros, un reloj de pie detenido y hojas de calendario sueltas por el suelo",`
+  <rect width="640" height="420" fill="#2a1508"/>
+  ${[0,1,2,3].map(s=>`<rect x="0" y="${110+s*92}" width="640" height="10" fill="#5a3015"/>`).join("")}
+  <g filter="url(#${id}b1)">${books}</g>
+  <g transform="translate(272,20)" filter="url(#${id}s)"><path d="M0 40 q48 -50 96 0 v330 h-96z" fill="url(#${id}mah)"/>
+   <rect width="96" height="380" fill="none"/><circle cx="48" cy="70" r="32" fill="url(#${id}brass)"/><circle cx="48" cy="70" r="26" fill="#f8efd6"/>
+   <line x1="48" y1="70" x2="48" y2="50" stroke="#1a120c" stroke-width="3"/><line x1="48" y1="70" x2="62" y2="80" stroke="#1a120c" stroke-width="2"/>
+   <rect x="24" y="120" width="48" height="190" fill="#1a0a03"/><rect x="24" y="120" width="48" height="190" fill="#f6d690" opacity=".08"/>
+   <line x1="48" y1="124" x2="48" y2="250" stroke="url(#${id}brass)" stroke-width="2"/><circle cx="48" cy="258" r="13" fill="url(#${id}brass)"/></g>
+  <rect y="392" width="640" height="28" fill="#3a1d0a"/>
+  ${[["FEB",70,340,-14],["JUN",470,350,9],["AGO",560,300,-6],["DIC",160,372,7],["",400,380,-4]].map(([m,x,y,r])=>`<g transform="translate(${x},${y}) rotate(${r})" filter="url(#${id}s)"><rect x="-28" y="-26" width="56" height="52" fill="url(#${id}paper)"/><rect x="-28" y="-26" width="56" height="12" fill="#8c2a2a" opacity=".85"/><text y="-17" text-anchor="middle" font-family="Georgia" font-size="8" fill="#fbf1d6">${m||"&#160;"}</text>${m?`<text y="14" text-anchor="middle" font-family="Georgia" font-size="20" fill="#2a2118" opacity=".18">··</text>`:`<circle cx="4" cy="8" r="12" fill="none" stroke="#7a4e1e" stroke-width="3" opacity=".35"/>`}</g>`).join("")}
+  ${note(30,186,-4,"Empieza por la última —J.",id,200)}`);},
+
+ telegrafo(){const id="tg";
+  return photo(id,"Fotografía de la sala del telégrafo: manipulador de latón, un telegrama con sello de un animal, una ventana nocturna y una postal",`
+  <rect width="640" height="420" fill="#5a4636"/><rect width="640" height="420" filter="url(#${id}w)" opacity=".35"/>
+  <g filter="url(#${id}s)"><rect x="420" y="20" width="180" height="150" fill="#1b2740"/><circle cx="560" cy="56" r="14" fill="#f2e6c2" opacity=".85"/>${Array.from({length:14},(_,k)=>`<circle cx="${430+(k*53)%170}" cy="${30+(k*29)%120}" r="1" fill="#fff" opacity=".7"/>`).join("")}<path d="M420 140 L470 110 L520 132 L560 104 L600 130 L600 170 L420 170Z" fill="#0e1626"/><rect x="420" y="20" width="180" height="150" fill="none" stroke="#3a1d0a" stroke-width="8"/><line x1="510" y1="20" x2="510" y2="170" stroke="#3a1d0a" stroke-width="5"/><line x1="420" y1="95" x2="600" y2="95" stroke="#3a1d0a" stroke-width="5"/></g>
+  <path d="M0 220 L640 220 L640 420 L0 420Z" fill="url(#${id}mah)"/><rect y="220" width="640" height="200" filter="url(#${id}w)" opacity=".6"/><rect y="220" width="640" height="4" fill="#c4834e" opacity=".6"/>
+  <g transform="translate(70,40) rotate(-3)" filter="url(#${id}s)"><rect width="300" height="230" fill="url(#${id}paper)"/><rect width="300" height="30" fill="#e8d9a8"/>
+   <text x="14" y="21" font-family="Georgia" font-size="13" letter-spacing="3" fill="#6e2016">TELEGRAMA · 1944</text>
+   <g font-family="Courier New" font-size="12" fill="#2a2118"><text x="16" y="62">REUNIONES ANUALES OCT 2026 STOP</text><text x="16" y="84">VUELVEN A CASA DE UN VIEJO</text><text x="16" y="102">ANFITRION STOP NUNCA FUE</text><text x="16" y="120">COLONIA STOP</text><text x="16" y="146" opacity=".55">—— —— ··· ——  (ilegible)</text></g>
+   <g transform="translate(214,150)"><rect width="66" height="62" fill="#fbf7ea" stroke="#d8cba8"/><rect x="5" y="5" width="56" height="52" fill="#c9d6e0"/>
+    <g fill="#f5f2ea" stroke="#56606b" stroke-width="1" filter="url(#${id}b1)"><ellipse cx="30" cy="32" rx="14" ry="9"/><circle cx="43" cy="27" r="6"/><path d="M47 30 q5 6 1 13" fill="none" stroke-width="2"/><rect x="20" y="37" width="4" height="10"/><rect x="34" y="37" width="4" height="10"/></g></g>
+   <g transform="translate(150,190)" opacity=".55"><circle r="26" fill="none" stroke="#1f3352" stroke-width="2"/><circle r="20" fill="none" stroke="#1f3352"/><text y="4" text-anchor="middle" font-family="Courier New" font-size="8" fill="#1f3352">OCT · 2026</text></g></g>
+  <g transform="translate(470,290)" filter="url(#${id}s)"><rect x="-60" y="10" width="140" height="18" fill="#2a1306"/><rect x="-40" y="-6" width="90" height="10" rx="3" fill="url(#${id}brass)" transform="rotate(-5)"/><circle cx="50" cy="-12" r="9" fill="#1a0a03"/><circle cx="-36" cy="2" r="6" fill="url(#${id}brass)"/></g>
+  <g transform="translate(60,300) rotate(4)" filter="url(#${id}s)"><rect width="200" height="96" fill="#f3e5c4"/><rect x="8" y="8" width="90" height="80" fill="#d79a62"/><path d="M8 88 L30 50 L50 70 L70 40 L98 88Z" fill="#a8613a"/><circle cx="76" cy="26" r="10" fill="#f6d690"/><text x="108" y="30" font-family="Segoe Script,Bradley Hand,cursive" font-size="12" fill="#3e2a6b">Recuerdos de</text><text x="108" y="50" font-family="Segoe Script,Bradley Hand,cursive" font-size="14" fill="#3e2a6b">Marrakech</text><text x="108" y="76" font-family="Segoe Script,Bradley Hand,cursive" font-size="13" fill="#3e2a6b">¡Es aquí! —J.</text></g>`);}
+};
+function keySvg(st){const c=st==="ok"?"#b8892b":st==="ko"?"#8c2a2a":"#9c8b6c";
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="12" cy="20" r="8" fill="none" stroke="${c}" stroke-width="4"/><rect x="19" y="18" width="18" height="4" fill="${c}"/><rect x="30" y="22" width="3" height="6" fill="${c}"/><rect x="35" y="22" width="2" height="4" fill="${c}"/>${st==="ko"?'<line x1="4" y1="4" x2="36" y2="36" stroke="#8c2a2a" stroke-width="3"/>':""}</svg>`;}
+
+/* ===== Pasillo animado ===== */
+const DX=[70,190,330,470,610,750,890];
+function hallSvg(){
+  const doors=[1,2,3,4,5].map(k=>doorSvg(k)).join("");
+  return `<svg class="hall" viewBox="0 0 1000 300" role="img" aria-label="Pasillo del hotel con cinco puertas numeradas y las puertas dobles del Salón Dorado al fondo; el detective camina por la alfombra">
+  <defs>
+   <pattern id="wp" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#6e2a22"/><path d="M20 4 q8 8 0 16 q-8 -8 0 -16z M20 24 q8 8 0 16 q-8 -8 0 -16z" fill="#8c3a2c"/><circle cx="0" cy="20" r="2" fill="#b8892b" opacity=".5"/><circle cx="40" cy="20" r="2" fill="#b8892b" opacity=".5"/></pattern>
+   <pattern id="cp" width="30" height="20" patternUnits="userSpaceOnUse"><rect width="30" height="20" fill="#7a1f1f"/><path d="M0 10 L15 0 L30 10 L15 20Z" fill="#8f2a26"/><circle cx="15" cy="10" r="2" fill="#c9a24a" opacity=".6"/></pattern>
+   <linearGradient id="dr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5a2c12"/><stop offset=".5" stop-color="#7a3c1c"/><stop offset="1" stop-color="#4a220c"/></linearGradient>
+   <linearGradient id="gd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6619"/><stop offset=".5" stop-color="#f2d27a"/><stop offset="1" stop-color="#8a6619"/></linearGradient>
+   <radialGradient id="sc" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe2a6" stop-opacity=".8"/><stop offset="1" stop-color="#ffe2a6" stop-opacity="0"/></radialGradient>
+   <radialGradient id="lt" cx="50%" cy="100%" r="80%"><stop offset="0" stop-color="#ffe9b0"/><stop offset="1" stop-color="#e2a84a"/></radialGradient>
+   <radialGradient id="vg" cx="50%" cy="50%" r="70%"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#140800" stop-opacity=".6"/></radialGradient>
+  </defs>
+  <rect width="1000" height="300" fill="url(#wp)"/>
+  <rect y="0" width="1000" height="14" fill="#3a1909"/><rect y="14" width="1000" height="4" fill="#b8892b" opacity=".7"/>
+  <rect y="190" width="1000" height="60" fill="#4a220c"/>${Array.from({length:20},(_,k)=>`<rect x="${k*50+6}" y="198" width="38" height="44" fill="none" stroke="#2a1105" stroke-width="2"/>`).join("")}
+  <rect y="186" width="1000" height="6" fill="#8a4a24"/>
+  ${[125,260,400,540,680,820].map(x=>`<g class="flicker"><circle cx="${x}" cy="70" r="46" fill="url(#sc)"/></g><path d="M${x-6} 82 h12 l-3 10 h-6z" fill="url(#gd)"/><path d="M${x-9} 66 q9 -16 18 0 v16 h-18z" fill="#f8e3b0" opacity=".95"/>`).join("")}
+  <g transform="translate(30,250)"><path d="M0 -10 h30 l-4 -28 h-22z" fill="#5a3a22"/><g fill="#2f5a3a">${Array.from({length:7},(_,k)=>`<path d="M15 -38 q${-30+k*10} -40 ${-10+k*4} -70 q4 30 ${-4} 70z"/>`).join("")}</g></g>
+  ${doors}
+  <g id="dGold" transform="translate(890,0)"><rect x="-58" y="40" width="116" height="152" fill="url(#gd)"/><rect x="-52" y="46" width="104" height="146" fill="#2a1306"/>
+   <rect id="goldLight" x="-50" y="48" width="100" height="144" fill="url(#lt)" opacity="0"/>
+   <rect id="goldL" x="-50" y="48" width="50" height="144" fill="url(#dr)" stroke="#b8892b"/><rect id="goldR" x="0" y="48" width="50" height="144" fill="url(#dr)" stroke="#b8892b"/>
+   <text x="0" y="36" text-anchor="middle" font-family="Georgia" font-size="11" letter-spacing="3" fill="#f2d27a">SALÓN DORADO</text></g>
+  <path d="M0 250 L1000 250 L1000 300 L0 300Z" fill="#2a1105"/><rect y="252" width="1000" height="40" fill="url(#cp)"/><rect y="252" width="1000" height="3" fill="#c9a24a" opacity=".6"/>
+  <g id="det" style="transform:translate(${DX[0]}px,0px)"><g transform="translate(0,276) scale(1.55)"><g class="bob">
+   <ellipse cx="0" cy="0" rx="16" ry="3.5" fill="#000" opacity=".35"/>
+   <rect class="leg a" x="-6" y="-36" width="5" height="36" fill="#2a2420"/><rect class="leg b" x="1" y="-36" width="5" height="36" fill="#1f1a17"/>
+   <path d="M-11 -76 Q0 -82 11 -76 L15 -30 L-15 -30Z" fill="#b39566"/><path d="M0 -76 L-4 -30 M0 -76 L4 -48" stroke="#8a7048" stroke-width="1"/>
+   <rect x="-14" y="-50" width="28" height="4" fill="#8a7048"/><path d="M-11 -76 L-4 -64 L0 -74 L4 -64 L11 -76" fill="#9a7d52"/>
+   <circle cx="1" cy="-86" r="8" fill="#e8c39e"/><ellipse cx="1" cy="-91" rx="15" ry="3.2" fill="#2e2620"/><path d="M-8 -92 q9 -14 18 0z" fill="#3a3028"/><rect x="-8" y="-95" width="18" height="3" fill="#6e2016"/>
+   <path d="M9 -70 L22 -60" stroke="#b39566" stroke-width="5" stroke-linecap="round"/><line x1="22" y1="-60" x2="28" y2="-64" stroke="#3a1909" stroke-width="2.5"/>
+   <circle cx="33" cy="-68" r="6.5" fill="#cfe7ef" fill-opacity=".45" stroke="#c49a3c" stroke-width="2.4"/></g></g></g>
+  <rect width="1000" height="300" fill="url(#vg)"/>
+  </svg>`;}
+function doorSvg(k){const x=DX[k];
+  return `<g id="door${k}" transform="translate(${x},0)">
+   <rect x="-38" y="66" width="76" height="126" fill="#2a1105"/><rect x="-34" y="70" width="68" height="122" fill="#1a0a03"/>
+   <rect class="dlight" x="-32" y="72" width="64" height="120" fill="url(#lt)" opacity="0"/>
+   <g class="leaf"><rect x="-32" y="72" width="64" height="120" fill="url(#dr)"/><rect x="-24" y="82" width="48" height="44" fill="none" stroke="#3a1909" stroke-width="2"/><rect x="-24" y="134" width="48" height="50" fill="none" stroke="#3a1909" stroke-width="2"/><circle cx="22" cy="134" r="3.5" fill="url(#gd)"/></g>
+   <rect x="-16" y="52" width="32" height="14" rx="2" fill="url(#gd)"/><text x="0" y="63" text-anchor="middle" font-family="Georgia" font-weight="bold" font-size="11" fill="#3a1909">${["","I","II","III","IV","V"][k]}</text>
+   <g class="seal" opacity="0"><circle cx="0" cy="130" r="13" fill="#8c2a2a"/><circle cx="0" cy="130" r="9" fill="none" stroke="#e2a0a0"/><text x="0" y="134" text-anchor="middle" font-size="11" fill="#fbe">✕</text></g>
+   <rect class="halo glow" x="-36" y="68" width="72" height="126" fill="none" stroke="#f2d27a" stroke-width="3" opacity="0"/>
+  </g>`;}
+function paintDoors(target){
+  for(let k=1;k<=5;k++){const g=document.getElementById("door"+k);if(!g)continue;const st=S.res[k-1].st;
+    g.querySelector(".leaf").setAttribute("transform",st==="ok"?"translate(-32,0) scale(.35,1) translate(32,0)":"");
+    g.querySelector(".dlight").setAttribute("opacity",st==="ok"?".9":"0");
+    g.querySelector(".seal").setAttribute("opacity",st==="ko"?"1":"0");
+    g.querySelector(".halo").setAttribute("opacity",k===target?"1":"0");g.querySelector(".halo").classList.toggle("glow",k===target);}
+  if(target===6){$("goldLight").setAttribute("opacity","1");}
+}
+const QUIPS=["«Elemental… o eso creía.»","«Jimmy, el botones, no deja de silbar. Sospechoso.»","«Este pasillo huele a puro y a tinta fresca.»","«Ni se te ocurra fiarte de una nota con J.»","«Ochenta y dos años de diferencia… ¡y la moqueta es igual de fea!»","«Si Keynes me viera ahora…»"];
+
+/* ===== Enigmas ===== */
+const P=[
+ {key:"p1",room:"Recepción",type:"Respuesta numérica",pic:"recepcion",cap:"Recepción · 00:47 h",
+  title:"Estancia I · El libro de registro",
+  story:"El libro de huéspedes tiene la página de hoy arrancada. Al pie, alguien ha escrito a lápiz: «el médico del mundo pasó consulta a muchos pacientes». La cerradura de la recepción pide el número exacto de esos chequeos.",
+  q:"¿Cuántos exámenes de la solidez económica de los países llevó a cabo el FMI en el ejercicio 2026?",
+  input:"num",ph:"Escribe solo el número",
+  hint:"«No confunda pacientes con socios del club, detective: los miembros del Fondo son más, y los que pidieron dinero, muchos menos. Busque los chequeos periódicos que el Fondo hace a cada país, los que llevan el nombre de un artículo de su Convenio.»",
+  page:"Informe Anual 2026, pág. 5 aprox.",
+  h:"300d82f2"},
+ {key:"p2",room:"Salón de mapas",type:"Selección múltiple",pic:"mapas",cap:"Salón de mapas · 01:20 h",
+  title:"Estancia II · El mapa de los préstamos",
+  story:"Sobre la gran mesa del salón de mapas alguien ha clavado una chincheta roja. Junto al mapa esperan cuatro postales: solo una corresponde al país que recibió el mayor compromiso de financiamiento del FMI en el ejercicio 2026.",
+  q:"¿Qué país recibió el mayor compromiso individual de financiamiento del FMI en el ejercicio 2026 (en millones de DEG)?",
+  input:"mc",opts:[["q","Ucrania","Servicio Ampliado del FMI"],["w","Pakistán","Servicio de Resiliencia y Sostenibilidad"],["x","México","Línea de Crédito Flexible"],["z","Costa Rica","Línea de Crédito Flexible"]],
+  hint:"«El ganador recibió una Línea de Crédito Flexible, una especie de seguro para países con políticas muy sólidas, de más de 17.000 millones de DEG: casi todo lo que se aprobó para su región, el Hemisferio Occidental.»",
+  page:"Informe Anual 2026, pág. 31 aprox.",
+  h:"ee2cd800"},
+ {key:"p3",room:"Sala de juntas",type:"Cálculo aplicado",pic:"juntas",cap:"Sala de juntas · 02:05 h",
+  title:"Estancia III · El poder del voto",
+  story:"En la sala de juntas, una urna de votación y una pizarra a medio borrar. La cerradura simula una votación del futuro Directorio: tendrás que calcular cuánto pesará un país en el FMI cuando entre en vigor la última revisión de cuotas.",
+  q:"Un país miembro tiene hoy una cuota de DEG 2.400 millones. Cuando entre en vigor el aumento aprobado en la Decimosexta Revisión General de Cuotas, ¿cuántos votos le corresponderán por su cuota, sin contar los votos básicos? Responde en miles de votos (ejemplo: 12.000 votos → escribe 12).",
+  input:"num",ph:"Miles de votos (solo el número)",
+  hint:"«Dos reglas del capítulo de cuotas, detective: el aumento de la Decimosexta Revisión se reparte de forma equiproporcional entre todos los miembros, y cada voto equivale a una cantidad fija de DEG de cuota. Aplique primero el aumento y después conviértalo en votos. Y no se fíe de las cuentas del botones.»",
+  page:"Informe Anual 2026, pág. 70 aprox.",
+  h:"a3f0a486"},
+ {key:"p4",room:"Biblioteca",type:"Ordenación cronológica",pic:"biblioteca",cap:"Biblioteca · 02:51 h",
+  title:"Estancia IV · El reloj de la historia",
+  story:"El reloj de pie de la biblioteca se ha detenido y las hojas del calendario están desperdigadas por el suelo, sin año. Para que el péndulo vuelva a moverse, coloca los acontecimientos en su orden correcto.",
+  q:"Toca las tarjetas en orden cronológico, del más antiguo (1) al más reciente (5).",
+  input:"seq",items:[["A","Mayor asignación de DEG de la historia (DEG 456.500 millones), en plena pandemia"],["R","La Junta de Gobernadores aprueba la Decimosexta Revisión General de Cuotas"],["K","El FMI crea el DEG como activo de reserva internacional"],["S","Sudán liquida sus atrasos con el FMI"],["N","Última activación de los Nuevos Acuerdos para la Obtención de Préstamos (NAP)"]],
+  hint:"«El DEG nació antes de que acabara la década en que el hombre pisó la Luna. Dos de los hitos ocurrieron el mismo año: primero se saldó una deuda y, pocas semanas después, llovieron DEG sobre el mundo.»",
+  page:"Informe Anual 2026, págs. 70–73 aprox.",
+  h:"e86e1695"},
+ {key:"p5",room:"Telégrafo",type:"Palabra clave",pic:"telegrafo",cap:"Sala del telégrafo · 03:30 h",
+  title:"Estancia V · El telegrama del futuro",
+  story:"El telégrafo repiquetea solo. Llega un mensaje desde octubre de 2026: el FMI y el Grupo Banco Mundial celebrarán sus Reuniones Anuales en una ciudad que ya las acogió hace tiempo. La puerta del Salón Dorado solo se abrirá con su nombre.",
+  q:"¿En qué ciudad se celebran las Reuniones Anuales del FMI y el Banco Mundial de octubre de 2026? (Una sola palabra)",
+  input:"text",ph:"Nombre de la ciudad",
+  hint:"«La última vez que esa ciudad acogió las Reuniones, la Unión Soviética aún existía. Es la capital de un reino del Sudeste Asiático, y su nombre oficial completo es uno de los más largos del mundo. Escriba el nombre corto, el internacional.»",
+  page:"Informe Anual 2026, pág. 23 aprox.",
+  h:"123b70e5"}
+];
+const HALL=[
+ {t:"El vestíbulo, a medianoche",x:"Las lámparas de pared parpadean. Detective {N} se ajusta el sombrero, deja atrás las palmeras del vestíbulo y avanza por la alfombra granate hacia la Recepción. Bajo la puerta asoma una tarjeta: «Te estaré observando. —J.»",b:"Forzar la Recepción ▸"},
+ {t:"Rumbo al Salón de mapas",x:"Desde el fondo del pasillo llega el crujido de un globo terráqueo que gira solo. Detective {N} sigue el sonido.",b:"Entrar en el Salón de mapas ▸"},
+ {t:"Rumbo a la Sala de juntas",x:"Alguien ha dejado una tiza todavía caliente junto a la puerta III. Sobre la mesa, la urna de votación espera. Detective {N} aprieta el paso.",b:"Entrar en la Sala de juntas ▸"},
+ {t:"Rumbo a la Biblioteca",x:"El tictac del reloj de la biblioteca se ha detenido. El silencio es casi peor. Detective {N} empuja la puerta IV con cautela.",b:"Entrar en la Biblioteca ▸"},
+ {t:"Rumbo al Telégrafo",x:"Un repiqueteo metálico rompe la noche: el telégrafo está recibiendo un mensaje desde muy, muy lejos en el tiempo.",b:"Entrar en la sala del Telégrafo ▸"},
+ {t:"Las puertas del Salón Dorado",x:"Amanece sobre las montañas. Las arañas de cristal del Salón Dorado se encienden una a una: los delegados esperan el informe de Detective {N}.",b:"Abrir el Salón Dorado ▸"}
+];
+
+/* ===== Estado ===== */
+const S={player:"",t0:0,timer:null,i:0,res:P.map(()=>({err:0,hint:false,pts:0,st:""})),pick:null,seq:[],sound:true,done:false,step:0};
+const MAXTRY=2;
+const fmt=sec=>String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
+const elapsed=()=>Math.floor((Date.now()-S.t0)/1000);
+const val=r=>Math.max(20,100-20*r.err-(r.hint?30:0));
+const total=()=>S.res.reduce((a,r)=>a+r.pts,0);
+const det=()=>"Detective "+S.player;
+function show(id){["scrIntro","scrHall","scrGame","scrEnd","scrProf"].forEach(x=>$(x).classList.toggle("hidden",x!==id));window.scrollTo(0,0);$("main").focus({preventScroll:true});}
+
+/* ===== Sonido ===== */
+let AC=null;
+function tone(fr,dur,type){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();fr.forEach((q,k)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type||"sine";o.frequency.value=q;const t=AC.currentTime+k*.12;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.16,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+dur+.05);});}catch(e){}}
+const bell=()=>tone([1318,1760],.9),buzz=()=>tone([140,110],.35,"square"),click=()=>tone([900],.06,"triangle");
+/* Efectos de cerradura sintetizados (sin archivos de audio) */
+function ctx(){AC=AC||new (window.AudioContext||window.webkitAudioContext)();return AC;}
+function nz(t,dur,freq,q,gain){const a=ctx(),n=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
+  const s=a.createBufferSource(),bp=a.createBiquadFilter(),g=a.createGain();s.buffer=buf;bp.type="bandpass";bp.frequency.value=freq;bp.Q.value=q;g.gain.value=gain;s.connect(bp);bp.connect(g);g.connect(a.destination);s.start(t);}
+function ping(t,freq,dur,gain,type){const a=ctx(),o=a.createOscillator(),g=a.createGain();o.type=type||"sine";o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(gain,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+.02);return o;}
+function unlockSound(){if(!S.sound)return;try{const a=ctx(),t=a.currentTime+.02;
+  ping(t,2650,.25,.05);ping(t+.05,3420,.2,.04);ping(t+.11,2980,.22,.035);nz(t,.05,4200,3,.6);nz(t+.07,.04,3600,3,.45);
+  [0,.07,.14,.21].forEach(k=>nz(t+.32+k,.03,1900,6,.9));
+  nz(t+.62,.09,380,2,1.6);ping(t+.62,120,.22,.25);ping(t+.63,240,.12,.08,"triangle");
+  const o=a.createOscillator(),bp=a.createBiquadFilter(),g=a.createGain(),lfo=a.createOscillator(),lg=a.createGain(),t2=t+.85;
+  o.type="sawtooth";o.frequency.setValueAtTime(170,t2);o.frequency.linearRampToValueAtTime(260,t2+.45);o.frequency.linearRampToValueAtTime(205,t2+.9);
+  lfo.frequency.value=23;lg.gain.value=14;lfo.connect(lg);lg.connect(o.frequency);bp.type="bandpass";bp.frequency.value=950;bp.Q.value=4;
+  g.gain.setValueAtTime(.0001,t2);g.gain.exponentialRampToValueAtTime(.06,t2+.12);g.gain.exponentialRampToValueAtTime(.0001,t2+.95);
+  o.connect(bp);bp.connect(g);g.connect(a.destination);o.start(t2);lfo.start(t2);o.stop(t2+1);lfo.stop(t2+1);}catch(e){}}
+function lockedSound(){if(!S.sound)return;try{const a=ctx(),t=a.currentTime+.02;
+  [0,.2,.4].forEach((k,i)=>{nz(t+k,.07,520,2,1.4-i*.25);ping(t+k,85,.14,.3-i*.06);nz(t+k+.06,.035,2100,5,.7);nz(t+k+.1,.05,700,3,.6);});
+  nz(t+.62,.12,260,1.5,1.1);ping(t+.62,70,.2,.22);}catch(e){}}
+function steps(){if(!S.sound)return;for(let k=0;k<6;k++)setTimeout(()=>tone([90+(k%2)*20],.08,"triangle"),k*420);}
+$("btnSound").addEventListener("click",()=>{S.sound=!S.sound;$("btnSound").setAttribute("aria-pressed",S.sound);$("btnSound").textContent=S.sound?"🔔 Sonido":"🔕 Silencio";});
+
+/* ===== Registro ===== */
+(function(){const sel=$("player");for(let i=1;i<=26;i++){const o=document.createElement("option");o.value="Alumno "+i;o.textContent="Detective Alumno "+i;sel.appendChild(o);}
+ const o=document.createElement("option");o.value="__otro";o.textContent="Otro (escribir nombre)";sel.appendChild(o);
+ sel.addEventListener("change",()=>{const ot=sel.value==="__otro";$("otherBox").classList.toggle("hidden",!ot);if(ot)$("otherName").focus();});})();
+$("heroPic").innerHTML=PIC.hero();
+
+/* ===== Pasillo ===== */
+function goHall(step){
+  S.step=step;const h=HALL[step];show("scrHall");
+  $("hEyebrow").textContent=step===0?"Planta principal · 00:30 h":`Pasillo · Llaves: ${S.res.filter(r=>r.st==="ok").length}/5`;
+  $("hTitle").textContent=h.t;$("hText").textContent=h.x.replace(/\{N\}/g,S.player);$("btnEnter").textContent=h.b;
+  $("hallPic").innerHTML=hallSvg();$("quip").textContent="";
+  const from=DX[step],to=DX[step+1],d=$("det");
+  d.style.transition="none";d.style.transform=`translate(${from}px,0px)`;paintDoors(step+1);
+  $("btnEnter").disabled=true;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{d.style.transition="";d.classList.add("walking");d.style.transform=`translate(${to}px,0px)`;steps();}));
+  const done=()=>{d.classList.remove("walking");$("btnEnter").disabled=false;$("btnEnter").focus();if(step===5){$("goldL").setAttribute("transform","translate(-50,0) scale(.3,1) translate(50,0)");$("goldR").setAttribute("transform","translate(50,0) scale(.3,1) translate(-50,0)");bell();}};
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)done();else setTimeout(done,2650);
+  d.addEventListener("click",()=>{$("quip").textContent=QUIPS[Math.floor(Math.random()*QUIPS.length)];click();});
+}
+$("btnEnter").addEventListener("click",()=>{if(S.step===5)finish();else{S.i=S.step;show("scrGame");renderPuzzle();}});
+
+/* ===== Enigma ===== */
+function renderKeys(){$("keys").innerHTML=P.map((p,k)=>{const st=S.res[k].st||(k===S.i&&!S.done?"on":"");return `<div class="key ${st}">${keySvg(S.res[k].st)}${p.room}<span class="sr">${st==="ok"?" (llave conseguida)":st==="ko"?" (puerta sellada)":""}</span></div>`;}).join("");}
+function meta(){const p=P[S.i],r=S.res[S.i],left=MAXTRY-r.err;
+  $("pMeta").innerHTML=`<span class="tag">${p.type}</span><span class="tag w">Vale ahora: ${val(r)} pts</span><span class="tries" aria-label="Intentos restantes: ${left}">Intentos: ${Array.from({length:MAXTRY},(_,k)=>`<i class="${k<left?"":"used"}"></i>`).join("")}</span>`;}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function renderPuzzle(){
+  const p=P[S.i];S.pick=null;S.seq=[];renderKeys();
+  $("pEyebrow").textContent=`${det()} · Estancia ${S.i+1} de 5 · ${p.room}`;
+  $("pTitle").textContent=p.title;meta();$("pStory").textContent=p.story;$("pQ").textContent=p.q;$("pSrc").textContent="📖 Fuente: "+p.page;
+  let b="";
+  if(p.input==="num"||p.input==="text")b=`<label class="l" for="ans">Combinación</label><input type="text" id="ans" autocomplete="off" placeholder="${p.ph}" ${p.input==="num"?'inputmode="numeric"':""}>`;
+  else if(p.input==="mc")b=`<div class="opts" role="group" aria-label="Postales">`+p.opts.map(o=>`<button type="button" class="post" data-v="${o[0]}" aria-pressed="false"><b>${o[1]}</b>${o[2]}</button>`).join("")+`</div>`;
+  else b=`<div class="seq">`+shuffle(p.items).map(it=>`<button type="button" class="card-t" data-v="${it[0]}"><span class="n">·</span><span>${it[1]}</span></button>`).join("")+`</div><div class="btns" style="margin-top:8px"><button type="button" class="btn plain" id="btnReset" style="padding:6px 12px;font-size:.85rem">↺ Reiniciar orden</button></div>`;
+  $("pBody").innerHTML=b;$("pPic").innerHTML=PIC[p.pic]();$("pCap").textContent=p.cap;
+  $("pHint").classList.add("hidden");$("pHint").innerHTML="";
+  $("btnHint").disabled=false;$("btnCheck").style.display="";$("btnHint").style.display="";$("btnNext").style.display="none";
+  $("pFb").textContent="";$("pFb").className="fb";
+  const a=$("ans");if(a){a.addEventListener("keydown",e=>{if(e.key==="Enter")check();});a.focus();}
+  document.querySelectorAll(".post").forEach(bt=>bt.addEventListener("click",()=>{click();document.querySelectorAll(".post").forEach(x=>x.setAttribute("aria-pressed","false"));bt.setAttribute("aria-pressed","true");S.pick=bt.dataset.v;}));
+  document.querySelectorAll(".card-t").forEach(bt=>bt.addEventListener("click",()=>{const v=bt.dataset.v;S.seq=S.seq.includes(v)?S.seq.filter(x=>x!==v):S.seq.concat(v);click();paintSeq();}));
+  if($("btnReset"))$("btnReset").addEventListener("click",()=>{S.seq=[];paintSeq();});
+}
+function paintSeq(){document.querySelectorAll(".card-t").forEach(bt=>{const k=S.seq.indexOf(bt.dataset.v);bt.classList.toggle("sel",k>=0);bt.querySelector(".n").textContent=k>=0?k+1:"·";});}
+function answer(){const p=P[S.i];if(p.input==="mc")return S.pick||"";if(p.input==="seq")return S.seq.length===p.items.length?S.seq.join(""):"";return $("ans").value;}
+function lock(){$("btnCheck").style.display="none";$("btnHint").style.display="none";$("btnNext").style.display="inline-block";
+  $("pBody").querySelectorAll("input,button").forEach(x=>x.disabled=true);
+  $("btnNext").textContent=S.i<P.length-1?"Volver al pasillo ▸":"Ir al Salón Dorado ▸";$("btnNext").focus();}
+function check(){
+  const p=P[S.i],r=S.res[S.i],n=norm(answer()),fb=$("pFb");
+  if(!n){fb.className="fb bad";fb.textContent=p.input==="seq"?"⚠ Ordena las cinco tarjetas antes de probar la combinación.":"⚠ Escribe o elige una respuesta antes de probar la combinación.";return;}
+  if(H(p.key+":"+n)===p.h){r.pts=val(r);r.st="ok";$("hudScore").textContent=total();unlockSound();
+    fb.className="fb good";fb.textContent=`✔ ¡Clic! La cerradura cede. ${det()} consigue la llave de «${p.room}»: +${r.pts} puntos.`;renderKeys();lock();}
+  else{r.err++;lockedSound();const c=$("pCard");c.classList.remove("shake");void c.offsetWidth;c.classList.add("shake");
+    if(r.err>=MAXTRY){r.pts=0;r.st="ko";fb.className="fb bad";fb.textContent=`✖ Segundo intento fallido. La puerta se sella con lacre rojo, ${det()}: 0 puntos en esta estancia.`;renderKeys();meta();lock();}
+    else{fb.className="fb bad";fb.textContent=`✖ La combinación no encaja (−20). Te queda 1 intento. Ahora la estancia vale ${val(r)} pts.`;meta();}}
+}
+function hint(){const p=P[S.i],r=S.res[S.i];if(r.hint)return;r.hint=true;tone([660,880],.3);
+  $("pHint").innerHTML=`<strong>Mrs. Hale se asoma y susurra:</strong> ${p.hint}<span class="pg">📖 ${p.page}</span>`;$("pHint").classList.remove("hidden");$("btnHint").disabled=true;$("pFb").textContent="";meta();}
+$("btnCheck").addEventListener("click",check);$("btnHint").addEventListener("click",hint);
+$("btnNext").addEventListener("click",()=>goHall(S.i+1));
+
+/* ===== Final ===== */
+function finish(){
+  clearInterval(S.timer);S.done=true;
+  const secs=elapsed(),score=total(),code=vcode(S.player,score,secs),keys=S.res.filter(r=>r.st==="ok").length;
+  $("eP").textContent=det();$("eS").textContent=score+" / 500";$("eT").textContent=fmt(secs);$("eSec").textContent=secs;$("eD").textContent=new Date().toLocaleString("es-ES");
+  $("eMsg").textContent=keys===5?`${det()} entra en el Salón Dorado con las cinco llaves. Los delegados se ponen en pie: los secretos del futuro FMI están a salvo… y en un rincón, Jimmy el botones silba disimulando.`:keys>=3?`${det()} recupera ${keys} de 5 llaves. El Salón Dorado se abre, aunque algunas páginas del informe siguen escondidas en el hotel. Jimmy sonríe desde el fondo.`:`${det()} solo recupera ${keys} de 5 llaves. Jimmy el botones se ha salido con la suya esta vez… pero el caso puede reabrirse.`;
+  $("eTable").innerHTML=P.map((p,k)=>{const r=S.res[k];return `<tr><td>${k+1}. ${p.room}</td><td>${r.st==="ok"?"🔑 Abierta":"✖ Sellada"}</td><td>${r.err}</td><td>${r.hint?"Sí":"No"}</td><td>${r.pts}</td></tr>`;}).join("")+`<tr><th>Total</th><th>${keys}/5</th><th>${S.res.reduce((a,r)=>a+r.err,0)}</th><th>${S.res.filter(r=>r.hint).length}</th><th>${score}</th></tr>`;
+  $("eCode").textContent=code;
+  S.summary=`ESCAPE ROOM G03 · El Enigma de Bretton Woods\n${det()}\nPuntuación: ${score}/500 (${keys}/5 llaves)\nTiempo: ${fmt(secs)} (${secs} s)\nCódigo: ${code}`;
+  show("scrEnd");tone([523,659,784,1047],.5,"triangle");if(keys>=3)confetti();
+}
+function confetti(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const c=$("confetti"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;const cols=["#b8892b","#8c2a2a","#1f3352","#e2c376","#2f6b3e"];
+  const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,vx:-1+Math.random()*2,vy:2+Math.random()*3,r:Math.random()*6.28,s:4+Math.random()*6,c:cols[Math.floor(Math.random()*5)]}));
+  let t=0;(function fr(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore();});if(++t<260)requestAnimationFrame(fr);else x.clearRect(0,0,c.width,c.height);})();}
+
+/* ===== Eventos ===== */
+$("btnStart").addEventListener("click",()=>{
+  let v=$("player").value;
+  if(!v){$("fbIntro").textContent="⚠ Elige quién investiga el caso.";$("player").focus();return;}
+  if(v==="__otro"){v=$("otherName").value.trim().replace(/\s+/g," ");if(v.length<2){$("fbIntro").textContent="⚠ Escribe tu nombre para firmar el caso.";$("otherName").focus();return;}}
+  S.player=v;$("hudPlayer").textContent=det();S.t0=Date.now();bell();
+  S.timer=setInterval(()=>{$("hudTime").textContent=fmt(elapsed());},1000);
+  goHall(0);
+});
+$("btnCopy").addEventListener("click",()=>{const ok=()=>{$("fbCopy").textContent="Resumen copiado. ¡Entrégalo a tu profesor!";};
+  const fb=()=>{const t=document.createElement("textarea");t.value=S.summary;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok();}catch(e){$("fbCopy").textContent="Copia el resumen manualmente.";}t.remove();};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(S.summary).then(ok,fb);else fb();});
+$("btnProf").addEventListener("click",()=>{if(S.t0&&!S.done){alert("Termina el caso antes de abrir el acceso del profesor.");return;}show("scrProf");});
+$("btnVerify").addEventListener("click",()=>{
+  const p=$("vP").value.trim().replace(/^detective\s+/i,"").replace(/\s+/g," "),s=$("vS").value.trim(),t=$("vT").value.trim(),c=$("vC").value.trim().toUpperCase(),fb=$("vFb");
+  if(!p||!/^\d+$/.test(s)||!/^\d+$/.test(t)||!c){fb.className="fb bad";fb.textContent="Rellena el nombre, la puntuación y el tiempo (solo números) y el código.";return;}
+  const ok=vcode(p,+s,+t)===c&&+s<=500&&+s%10===0;fb.className="fb "+(ok?"good":"bad");
+  fb.textContent=ok?`✔ VÁLIDO · Detective ${p} · ${s} puntos · ${fmt(+t)}`:"✖ NO VÁLIDO · Los datos no coinciden con el código.";});
+if(/(^|[?&#])profesor\b/i.test(location.search+location.hash))show("scrProf");
+})();
+</script>
+</body>
+</html>
