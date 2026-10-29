@@ -345,7 +345,7 @@ footer .btn{font-size:.78rem;padding:6px 12px;margin-top:8px}
     <p class="eyebrow">Despacho de dirección</p>
     <h2 id="tProf">Validación del profesor · G03</h2>
     <p>Introduce los datos que entrega el alumno. El código se recalcula a partir del nombre, la puntuación y el tiempo; si cualquiera se ha modificado, no coincidirá. (Las mayúsculas y las tildes del nombre no importan; escribe el nombre sin la palabra «Detective».)</p>
-    <label class="l" for="vP">Nombre (p. ej. «Alumno 7»)</label><input type="text" id="vP">
+    <label class="l" for="vP">NPA o nombre (p. ej. «BC27409»)</label><input type="text" id="vP">
     <label class="l" for="vS">Puntuación (0–500)</label><input type="text" id="vS" inputmode="numeric">
     <label class="l" for="vT">Tiempo total en segundos</label><input type="text" id="vT" inputmode="numeric">
     <label class="l" for="vC">Código de verificación</label><input type="text" id="vC" placeholder="G03-XXXX-XXXX-XXXX">
@@ -902,7 +902,7 @@ function steps(){if(!S.sound)return;for(let k=0;k<6;k++)setTimeout(()=>tone([90+
 $("btnSound").addEventListener("click",()=>{S.sound=!S.sound;$("btnSound").setAttribute("aria-pressed",S.sound);$("btnSound").textContent=S.sound?"🔔 Sonido":"🔕 Silencio";});
 
 /* ===== Registro ===== */
-(function(){const sel=$("player");for(let i=1;i<=26;i++){const o=document.createElement("option");o.value="Alumno "+i;o.textContent="Detective Alumno "+i;sel.appendChild(o);}
+(function(){const sel=$("player");const NPA=["BC27409","OY27278","EF50332","DE52635","XZ27070","AC27264","FG27701","QR27304","ST27810","LO27443","AC51648","ZA27071","AC51168","RS27161","FG27461","XZ27598","PQ50439","VX27213","BC27625","RS08801","IJ27560","JK27081","EF27268","HI27415","NP27109","AC27240"];NPA.forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;sel.appendChild(o);});
  const o=document.createElement("option");o.value="__otro";o.textContent="Otro (escribir nombre)";sel.appendChild(o);
  sel.addEventListener("change",()=>{const ot=sel.value==="__otro";$("otherBox").classList.toggle("hidden",!ot);if(ot)$("otherName").focus();});})();
 $("heroPic").innerHTML=PIC.hero();
